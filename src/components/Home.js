@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable default-case */
 import styled from "styled-components";
 import ImgSlider from "./ImgSlider";
 import NewDisney from "./NewDisney";
@@ -6,7 +8,57 @@ import Recommends from "./Recommends";
 import Trendings from "./Trendings";
 import Viewers from "./Viewers";
 
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import db from "../firebase";
+import { setMovies } from "../features/movie/movieSlice";
+import { selectUserName } from "../features/user/userSlice";
+
 const Home = (props) => {
+  const dispatch = useDispatch();
+  const userName = useSelector(selectUserName);
+  let recommends = [];
+  let newDisneys = [];
+  let originals = [];
+  let trendings = [];
+
+  useEffect(() => {
+    console.log("Hello. I'm Home.");
+    db.collection("movies").onSnapshot((snapshot) => {
+      console.log(recommends);
+      snapshot.docs.map((doc) => {
+        switch (doc.data().type) {
+          case "recommend":
+            recommends = [...recommends, { id: doc.id, ...doc.data() }];
+            break;
+
+          case "new":
+            console.log(doc);
+            newDisneys = [...newDisneys, { id: doc.id, ...doc.data() }];
+
+            break;
+
+          case "original":
+            originals = [...originals, { id: doc.id, ...doc.data() }];
+
+            break;
+
+          case "trending":
+            trendings = [...trendings, { id: doc.id, ...doc.data() }];
+            break;
+        }
+      });
+      dispatch(
+        setMovies({
+          recommend: recommends,
+          newDisney: newDisneys,
+          original: originals,
+          trending: trendings,
+        })
+      );
+    });
+  }, [userName]);
+
   return (
     <Container>
       <ImgSlider />
