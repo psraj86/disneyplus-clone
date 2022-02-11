@@ -15,7 +15,7 @@ The page will reload when you make changes.\
 You may also see any lint errors in the console.
 
 ## `Demo Link`
-Open [https://disney-clone-d1e27.firebaseapp.com/](https://disney-clone-d1e27.firebaseapp.com/) to view it in your browser.
+Open [https://disneyplus-clone-ffe9d.web.app/](https://disneyplus-clone-ffe9d.web.app/) to view it in your browser.
 
 ### `npm test`
 
